@@ -20,7 +20,7 @@ final class NavigationTests: XCTestCase {
         app.launch()
         app.buttons["open-auth"].tap()
         XCTAssertTrue(app.buttons["sign-in-apple"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["Continue with Google"].exists)
+        XCTAssertTrue(app.buttons["Continue with Gmail"].exists)
         app.buttons["Continue with Email"].tap()
         XCTAssertTrue(app.textFields["auth-email"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS[c] %@", "not configured yet")).firstMatch.exists)
