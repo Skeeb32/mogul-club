@@ -7,13 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		89D0ADE6308CFF6700F400D3 /* Mogul_ClubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D0ADE5308CFF6700F400D3 /* Mogul_ClubApp.swift */; };
-		89D0ADE8308CFF6700F400D3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D0ADE7308CFF6700F400D3 /* ContentView.swift */; };
+		21A773683F5BDC7CF3861894 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531B364F3E001A6036AA08C9 /* DesignSystem.swift */; };
+		21CF76950D4CB1102CEE8658 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D85F355F2B2E769931D37E5 /* Property.swift */; };
+		2A9DDD42E4AA00445B614768 /* MogulClubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D64F9F40689A14398C62EE /* MogulClubApp.swift */; };
+		32F3C3CA4E483106D45B95B1 /* PropertyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1229DC213B6EEB4CC370945 /* PropertyDetailView.swift */; };
+		3B15A94E4D3C561657D30920 /* APIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9DA93CD23FD319373A2E31 /* APIClientTests.swift */; };
+		4EDC7CE7D676DD52ED980A8E /* DiscoverModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10656AFC7837D631BD56049F /* DiscoverModel.swift */; };
 		89D0ADEA308CFF6900F400D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89D0ADE9308CFF6900F400D3 /* Assets.xcassets */; };
 		89D0ADEE308CFF6900F400D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89D0ADED308CFF6900F400D3 /* Preview Assets.xcassets */; };
-		89D0ADF8308CFF6900F400D3 /* Mogul_ClubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D0ADF7308CFF6900F400D3 /* Mogul_ClubTests.swift */; };
-		89D0AE02308CFF6900F400D3 /* Mogul_ClubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D0AE01308CFF6900F400D3 /* Mogul_ClubUITests.swift */; };
-		89D0AE04308CFF6900F400D3 /* Mogul_ClubUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D0AE03308CFF6900F400D3 /* Mogul_ClubUITestsLaunchTests.swift */; };
+		D481A80E22EA6F74606C7985 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDD819C24C91FDA5FA0243B /* NavigationTests.swift */; };
+		D891675F23BF666F6A7E3029 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636CED983D8300844C0AAB9C /* DiscoverView.swift */; };
+		EC8DF353177831F12EADC243 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD377FF1666DFBB4D0E494 /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0EFD377FF1666DFBB4D0E494 /* APIClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = APIClient.swift; path = Core/APIClient.swift; sourceTree = "<group>"; };
+		10656AFC7837D631BD56049F /* DiscoverModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DiscoverModel.swift; path = Features/Discover/DiscoverModel.swift; sourceTree = "<group>"; };
+		531B364F3E001A6036AA08C9 /* DesignSystem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DesignSystem.swift; path = Core/DesignSystem.swift; sourceTree = "<group>"; };
+		636CED983D8300844C0AAB9C /* DiscoverView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DiscoverView.swift; path = Features/Discover/DiscoverView.swift; sourceTree = "<group>"; };
+		6D85F355F2B2E769931D37E5 /* Property.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Property.swift; path = Core/Property.swift; sourceTree = "<group>"; };
+		77D64F9F40689A14398C62EE /* MogulClubApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MogulClubApp.swift; path = App/MogulClubApp.swift; sourceTree = "<group>"; };
 		89D0ADE2308CFF6700F400D3 /* Mogul Club.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mogul Club.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89D0ADE5308CFF6700F400D3 /* Mogul_ClubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mogul_ClubApp.swift; sourceTree = "<group>"; };
 		89D0ADE7308CFF6700F400D3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,6 +55,11 @@
 		89D0ADFD308CFF6900F400D3 /* Mogul ClubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mogul ClubUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89D0AE01308CFF6900F400D3 /* Mogul_ClubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mogul_ClubUITests.swift; sourceTree = "<group>"; };
 		89D0AE03308CFF6900F400D3 /* Mogul_ClubUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mogul_ClubUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8D1A876F570209D282E049A6 /* APIClientTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = APIClientTests.swift; path = "Mogul ClubTests/APIClientTests.swift"; sourceTree = "<group>"; };
+		8EDD819C24C91FDA5FA0243B /* NavigationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NavigationTests.swift; path = apps/ios/MogulClubUITests/NavigationTests.swift; sourceTree = "<group>"; };
+		A1229DC213B6EEB4CC370945 /* PropertyDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PropertyDetailView.swift; path = Features/Discover/PropertyDetailView.swift; sourceTree = "<group>"; };
+		CBA8C95DE1383AA98B84F63C /* NavigationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NavigationTests.swift; path = "Mogul ClubUITests/NavigationTests.swift"; sourceTree = "<group>"; };
+		DE9DA93CD23FD319373A2E31 /* APIClientTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = APIClientTests.swift; path = apps/ios/MogulClubTests/APIClientTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +87,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0BD50C52287A1CB348255676 /* Mogul implementation */ = {
+			isa = PBXGroup;
+			children = (
+				77D64F9F40689A14398C62EE /* MogulClubApp.swift */,
+				0EFD377FF1666DFBB4D0E494 /* APIClient.swift */,
+				531B364F3E001A6036AA08C9 /* DesignSystem.swift */,
+				6D85F355F2B2E769931D37E5 /* Property.swift */,
+				10656AFC7837D631BD56049F /* DiscoverModel.swift */,
+				636CED983D8300844C0AAB9C /* DiscoverView.swift */,
+				A1229DC213B6EEB4CC370945 /* PropertyDetailView.swift */,
+			);
+			name = "Mogul implementation";
+			path = apps/ios/MogulClub;
+			sourceTree = "<group>";
+		};
 		89D0ADD9308CFF6700F400D3 = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +109,11 @@
 				89D0ADF6308CFF6900F400D3 /* Mogul ClubTests */,
 				89D0AE00308CFF6900F400D3 /* Mogul ClubUITests */,
 				89D0ADE3308CFF6700F400D3 /* Products */,
+				0BD50C52287A1CB348255676 /* Mogul implementation */,
+				8D1A876F570209D282E049A6 /* APIClientTests.swift */,
+				CBA8C95DE1383AA98B84F63C /* NavigationTests.swift */,
+				DE9DA93CD23FD319373A2E31 /* APIClientTests.swift */,
+				8EDD819C24C91FDA5FA0243B /* NavigationTests.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -259,8 +294,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89D0ADE8308CFF6700F400D3 /* ContentView.swift in Sources */,
-				89D0ADE6308CFF6700F400D3 /* Mogul_ClubApp.swift in Sources */,
+				2A9DDD42E4AA00445B614768 /* MogulClubApp.swift in Sources */,
+				EC8DF353177831F12EADC243 /* APIClient.swift in Sources */,
+				21A773683F5BDC7CF3861894 /* DesignSystem.swift in Sources */,
+				21CF76950D4CB1102CEE8658 /* Property.swift in Sources */,
+				4EDC7CE7D676DD52ED980A8E /* DiscoverModel.swift in Sources */,
+				D891675F23BF666F6A7E3029 /* DiscoverView.swift in Sources */,
+				32F3C3CA4E483106D45B95B1 /* PropertyDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89D0ADF8308CFF6900F400D3 /* Mogul_ClubTests.swift in Sources */,
+				3B15A94E4D3C561657D30920 /* APIClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,8 +316,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89D0AE02308CFF6900F400D3 /* Mogul_ClubUITests.swift in Sources */,
-				89D0AE04308CFF6900F400D3 /* Mogul_ClubUITestsLaunchTests.swift in Sources */,
+				D481A80E22EA6F74606C7985 /* NavigationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,7 +455,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Mogul Club/Mogul_Club.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Mogul Club/Preview Content\"";
@@ -424,6 +463,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "apps/ios/Config/Debug-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Mogul Club Demo";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -441,9 +482,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Mogul.Mogul-Club";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -454,7 +496,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Mogul Club/Mogul_Club.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Mogul Club/Preview Content\"";
@@ -462,6 +504,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "apps/ios/Config/Release-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Mogul Club Demo";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -479,9 +523,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Mogul.Mogul-Club";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -501,9 +546,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Mogul.Mogul-ClubTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = targeted;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mogul Club.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mogul Club";
@@ -524,9 +570,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Mogul.Mogul-ClubTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = targeted;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mogul Club.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mogul Club";
@@ -546,9 +593,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Mogul.Mogul-ClubUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = targeted;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Mogul Club";
@@ -568,9 +616,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Mogul.Mogul-ClubUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = targeted;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Mogul Club";

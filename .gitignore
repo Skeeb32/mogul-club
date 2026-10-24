@@ -1,0 +1,16 @@
+node_modules/
+.next/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+.build/
+DerivedData/
+**/xcuserdata/
+*.xcuserstate
+coverage/
+.test-results/
+*.tsbuildinfo
+.local-demo/
+SimulatorBuild/

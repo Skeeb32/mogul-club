@@ -1,0 +1,5 @@
+import type { Property } from '@mogul/contracts';
+export const demoProperties: Property[] = [
+  { id: 'demo-magnolia', name: 'Magnolia House', city: 'Demo Dallas', state: 'TX', propertyType: 'Single family', bedrooms: 3, bathrooms: 2, areaSqFt: 1840, illustrativeValueMinor: 32500000, currency: 'USD', summary: 'A fictional residential property used to explore the Mogul Club experience. All facts and amounts are synthetic, with no offering or investment available.', synthetic: true, status: 'demo_only', source: 'Mogul Club synthetic development fixture v1', updatedAt: '2026-10-24T00:00:00.000Z' },
+  { id: 'demo-cedar', name: 'Cedar Row', city: 'Demo Raleigh', state: 'NC', propertyType: 'Townhome', bedrooms: 2, bathrooms: 2, areaSqFt: 1460, illustrativeValueMinor: 28000000, currency: 'USD', summary: 'A fictional townhome for testing property discovery. This is not a real address, valuation, rental record or investment opportunity.', synthetic: true, status: 'demo_only', source: 'Mogul Club synthetic development fixture v1', updatedAt: '2026-10-24T00:00:00.000Z' },
+];

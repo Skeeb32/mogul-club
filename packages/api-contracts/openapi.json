@@ -1,0 +1,260 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/live": {
+      "get": {
+        "operationId": "HealthController_live",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "operationId": "HealthController_health",
+        "parameters": [],
+        "responses": {
+          "503": {
+            "description": "One or more dependencies unavailable"
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/api/v1/properties": {
+      "get": {
+        "operationId": "PropertiesController_list",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown query parameters"
+          },
+          "404": {
+            "description": "Missing record or demo disabled"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "503": {
+            "description": "Storage unavailable"
+          }
+        },
+        "tags": [
+          "Demo properties"
+        ]
+      }
+    },
+    "/api/v1/properties/{id}": {
+      "get": {
+        "operationId": "PropertiesController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PropertyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown query parameters"
+          },
+          "404": {
+            "description": "Missing record or demo disabled"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "503": {
+            "description": "Storage unavailable"
+          }
+        },
+        "tags": [
+          "Demo properties"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Mogul Club development API",
+    "description": "Synthetic read-only discovery. No financial execution or authentication implemented.",
+    "version": "0.1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "PropertyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "propertyType": {
+            "type": "string",
+            "enum": [
+              "Single family",
+              "Townhome"
+            ]
+          },
+          "bedrooms": {
+            "type": "number"
+          },
+          "bathrooms": {
+            "type": "number"
+          },
+          "areaSqFt": {
+            "type": "number"
+          },
+          "illustrativeValueMinor": {
+            "type": "integer",
+            "description": "Illustrative USD cents, not a verified valuation"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "demo_only"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "city",
+          "state",
+          "propertyType",
+          "bedrooms",
+          "bathrooms",
+          "areaSqFt",
+          "illustrativeValueMinor",
+          "currency",
+          "summary",
+          "synthetic",
+          "status",
+          "source",
+          "updatedAt"
+        ]
+      },
+      "PageResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertyResponse"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "demo"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "limit",
+          "mode"
+        ]
+      }
+    }
+  }
+}

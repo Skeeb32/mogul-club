@@ -1,0 +1,35 @@
+{
+  "name": "mogul-club",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22.23.4 <23"
+  },
+  "scripts": {
+    "build": "pnpm --filter @mogul/contracts build && pnpm --filter @mogul/api build && pnpm --filter @mogul/admin build",
+    "typecheck": "pnpm --filter @mogul/contracts build && pnpm -r typecheck",
+    "lint": "eslint .",
+    "test": "pnpm --filter @mogul/contracts build && pnpm --filter @mogul/api test",
+    "test:integration": "pnpm --filter @mogul/contracts build && pnpm --filter @mogul/api test:integration",
+    "dev:api": "pnpm --filter @mogul/api dev",
+    "dev:admin": "pnpm --filter @mogul/admin dev",
+    "seed": "pnpm --filter @mogul/api seed",
+    "contracts": "pnpm --filter @mogul/contracts build && pnpm --filter @mogul/api build && pnpm --filter @mogul/api contracts",
+    "test:browser": "node scripts/browser-smoke.mjs",
+    "dev:demo": "pnpm --filter @mogul/contracts build && pnpm --filter @mogul/api build && node scripts/demo-api.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@types/node": "22.20.5",
+    "eslint": "10.13.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "multer": "2.5.0"
+    }
+  }
+}
