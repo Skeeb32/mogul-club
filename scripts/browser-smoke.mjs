@@ -30,6 +30,20 @@ async function ready(url) {
   }
   throw new Error('Service startup timed out');
 }
+async function readyForSeededProperty(url) {
+  const deadline = Date.now() + 45000;
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const page = await response.json();
+        if (page.items?.some(property => property.id === 'demo-magnolia' && property.name === 'Magnolia House')) return;
+      }
+    } catch { /* bounded startup retry */ }
+    await new Promise(resolve => setTimeout(resolve, 300));
+  }
+  throw new Error('API did not return the seeded Magnolia House fixture before the browser check');
+}
 let mongo;
 let browser;
 await mkdir(root + '.test-results', { recursive: true });
@@ -38,7 +52,7 @@ try {
   const env = { ...process.env, NODE_ENV: 'development', DEMO_MODE: 'true', PORT: String(apiPort), MONGODB_URI: mongo.getUri('mogul_demo'), POSTGRES_URL: 'postgresql://127.0.0.1:1/unavailable', REDIS_URL: 'redis://127.0.0.1:1' };
   execFileSync(process.execPath, ['dist/src/seed.js'], { cwd: root + 'apps/api', env });
   const api = start(['dist/src/main.js'], root + 'apps/api', env);
-  await ready(`http://127.0.0.1:${apiPort}/api/v1/properties`);
+  await readyForSeededProperty(`http://127.0.0.1:${apiPort}/api/v1/properties`);
   start([requireAdmin.resolve('next/dist/bin/next'), 'start', '--port', String(adminPort)], root + 'apps/admin', { ...process.env, NODE_ENV: 'production', API_BASE_URL: `http://127.0.0.1:${apiPort}` });
   await ready(`http://127.0.0.1:${adminPort}`);
   browser = await chromium.launch({ timeout: 20000, ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}) });
