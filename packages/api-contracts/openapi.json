@@ -132,7 +132,7 @@
   },
   "info": {
     "title": "Mogul Club development API",
-    "description": "Synthetic read-only discovery. No financial execution or authentication implemented.",
+    "description": "Firebase ID tokens are verified on protected routes when configured. Synthetic property discovery stays public and read-only; no financial execution is implemented.",
     "version": "0.1.0",
     "contact": {}
   },
