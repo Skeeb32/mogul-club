@@ -8,5 +8,5 @@ export function configure(app: INestApplication) {
   app.enableShutdownHooks();
 }
 export function openApi(app: INestApplication) {
-  return SwaggerModule.createDocument(app, new DocumentBuilder().setTitle('Mogul Club development API').setDescription('Synthetic read-only discovery. No financial execution or authentication implemented.').setVersion('0.1.0').build());
+  return SwaggerModule.createDocument(app, new DocumentBuilder().setTitle('Mogul Club development API').setDescription('Firebase ID tokens are verified on protected routes when configured. Synthetic property discovery stays public and read-only; no financial execution is implemented.').setVersion('0.1.0').build());
 }

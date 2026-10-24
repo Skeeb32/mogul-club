@@ -9,7 +9,7 @@ Native iOS real estate platform in development. The initial slice is a **read-on
 ## What exists
 
 - SwiftUI welcome, Discover/search, API-backed property detail, portfolio/document empty states and account information; Xcode project and XCTest/XCUITest sources.
-- NestJS `/api/v1` public demo property API, strict query validation, pagination, Swagger, default-deny route authorization, throttling and security headers.
+- NestJS `/api/v1` public demo property API, strict query validation, pagination, Swagger, Firebase token verification for protected routes, default-deny authorization, throttling and security headers.
 - Next.js read-only demo operations page with search, empty/error recovery, responsive layout and light/dark themes. Privileged staff administration is not implemented.
 - MongoDB fixtures, unique index and schema validation; persistent Compose volumes; PostgreSQL and Redis readiness probes.
 - Pinned pnpm workspace, Docker images, CI workflow, architecture decisions, risk register and release blockers.
@@ -105,7 +105,7 @@ Screenshots/logs are ignored under `.test-results/`. OpenAPI is generated to `pa
 | GET | `/api/v1/properties?q=&page=1&limit=20` | Public synthetic, published demo records only; non-production demo mode required |
 | GET | `/api/v1/properties/:id` | Same policy; 404 for absent/invalid IDs |
 
-Query parameters are whitelisted, search is literal and limited to 80 characters, page size is at most 50. Storage failures return a sanitized 503. Demo-disabled discovery returns 404. No privileged or financial routes exist; the global guard rejects any future route unless explicitly made public or integrated with real authorization. Do not interpret this as a completed authentication implementation.
+Query parameters are whitelisted, search is literal and limited to 80 characters, page size is at most 50. Storage failures return a sanitized 503. Demo-disabled discovery returns 404. No privileged or financial routes exist. Private routes require a Firebase ID token for a verified account when `FIREBASE_PROJECT_ID` and server Application Default Credentials are configured; without provider configuration they remain denied. Public demo property routes expose only synthetic read-only records. See [Firebase setup](docs/auth/firebase-setup.md).
 
 ## Architecture and next work
 

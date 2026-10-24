@@ -30,7 +30,7 @@ XCTest/XCUITest sources exist but were **not executed**. No GitHub Actions run, 
 ## Behavior actually exercised
 
 - Configuration rejects missing/invalid environment values, malformed connection URLs and production demo mode.
-- An unmarked controller rejects anonymous and fabricated bearer credentials. This is default-deny behavior, not implemented authentication.
+- Unmarked controllers reject anonymous, malformed, fabricated, and unverified bearer credentials. With a configured Firebase Admin verifier, a verified, non-revoked Firebase ID token is attached to the request as its principal. No investor-data routes exist yet.
 - HTTP query validation rejects unknown/nested fields, excessive page sizes and out-of-range pages.
 - Property routes restrict discovery to synthetic demo records; demo-disabled access and unknown IDs return 404.
 - Database failures return sanitized 503 responses.

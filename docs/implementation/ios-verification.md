@@ -56,7 +56,7 @@ The demo server was run with the installed Node 22.23.4 executable on PATH. The 
 
 The local demo API runs on port 3001 with a real MongoDB 8.0.15 process. Synthetic records persist in ignored `.local-demo/mongodb`. PostgreSQL/Redis are not started by this lightweight command; overall readiness remains degraded while the discovery endpoints work. Stop the demo with Control-C; restart from this folder using `pnpm dev:demo`.
 
-The app is open in Simulator on Discover. No real funds, authentication, ownership, distributions or live offerings are enabled. Docker/container validation, device testing, manual accessibility assessment, production security/legal gates and App Store distribution remain incomplete. See the roadmap and original verification report for the wider platform scope; this native verification supersedes their earlier missing-Xcode blocker only.
+The app is open in Simulator on Discover. No real funds, configured Firebase authentication, ownership, distributions or live offerings are enabled. Docker/container validation, device testing, manual accessibility assessment, production security/legal gates and App Store distribution remain incomplete. See the roadmap and original verification report for the wider platform scope; this native verification supersedes their earlier missing-Xcode blocker only.
 
 
 ## Logo integration — October 24, 2026
@@ -71,3 +71,16 @@ Actual verification on iPhone 15 / iOS 17.5:
 - Welcome visually checked in light and dark appearance; Discover checked with API-loaded properties. Screenshots: `logo-welcome.png`, `logo-welcome-dark.png`, `logo-discover.png` under `.test-results/`.
 
 This completes the requested in-app logo integration. The broader redesign brief and launcher AppIcon are not implemented in this update. The supplied light logo has limited raster resolution; a vector source would improve sharpness.
+
+## Authentication and authorization — October 24, 2026
+
+Added native Firebase Authentication flows for Apple, Google and email/password, including email verification and resend, password reset, restored sessions, account profile display/name update, sign-out and confirmed account deletion. Signup requires a legal acknowledgment. The UI explains that identity verification does not unlock investing in this synthetic demo. The API now verifies Firebase ID tokens (including revocation and verified-email checks) on protected routes and rejects invalid or unverified credentials. Public health and synthetic property discovery remain public. There are no private investor-data routes yet.
+
+| Check | Actual result |
+|---|---|
+| `xcodebuild -project 'Mogul Club.xcodeproj' -scheme 'Mogul Club' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' -derivedDataPath apps/ios/SimulatorBuild -resultBundlePath .test-results/auth-ios-verified.xcresult CODE_SIGNING_ALLOWED=NO test` | Exit 0; `TEST SUCCEEDED`; 8 unit tests and 3 UI tests passed, 0 failures. Includes auth entry with setup-required disabled actions, welcome/demo navigation, and API-backed property detail. Log/result bundle in ignored `.test-results/`. |
+| `pnpm --filter @mogul/api test` | Exit 0; 5 passed, 0 failed, including verified and unverified Firebase principal behavior and invalid bearer rejection. |
+| `pnpm lint` | Exit 0. Node 22.12 emitted the configured engine warning (workspace requests 22.23.4); lint passed. ESLint excludes Xcode's downloaded Swift package checkouts and test artifacts. |
+| `pnpm --filter @mogul/api typecheck` | Exit 0. Node 22.12 emitted the configured engine warning; typecheck passed. |
+
+This simulator has no Firebase configuration or Apple/Google OAuth credentials. The UI correctly reports setup is required and does not create a fake session; live provider sign-in, verification email delivery, password reset delivery, token revocation against Firebase, and account deletion were not exercised. Follow [firebase-setup.md](../auth/firebase-setup.md) to configure a dedicated development Firebase project and ADC for the API. Actual Firebase credentials and service-account material are not in the repository. Xcode simulator tests establish simulator behavior only, not physical-device or production readiness. The welcome buttons had overlapped in the previous layout; the final passing run verifies that Explore opens the demo and the separate sign-in action opens auth.

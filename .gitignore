@@ -14,3 +14,6 @@ coverage/
 *.tsbuildinfo
 .local-demo/
 SimulatorBuild/
+
+# Firebase client configuration: supply locally for development.
+Mogul Club/GoogleService-Info.plist
