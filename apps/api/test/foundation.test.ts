@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { Controller, Get, INestApplication } from '@nestjs/common';
+import { Controller, Get, INestApplication, Req } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
@@ -9,6 +9,7 @@ import { loadConfig } from '../src/config';
 import { Database } from '../src/database';
 import { PropertiesController, PropertiesService } from '../src/properties';
 import { DefaultDenyGuard } from '../src/security';
+import { FirebaseAuthVerifier } from '../src/firebase-auth';
 import { configure, openApi } from '../src/setup';
 import { demoProperties } from '../src/fixtures';
 const environment = { NODE_ENV: 'test', DEMO_MODE: 'true', MONGODB_URI: 'mongodb://localhost/test', POSTGRES_URL: 'postgresql://localhost/test', REDIS_URL: 'redis://localhost' };
@@ -16,22 +17,23 @@ Object.assign(process.env, environment);
 
 test('configuration rejects missing, malformed and unsafe production settings', () => {
   assert.equal(loadConfig(environment).demo, true);
+  assert.equal(loadConfig({ ...environment, FIREBASE_PROJECT_ID: 'mogul-development' }).firebaseProjectId, 'mogul-development');
   for (const overrides of [{ DEMO_MODE: undefined }, { DEMO_MODE: 'yes' }, { NODE_ENV: 'production' }, { PORT: 'NaN' }, { PORT: '0' }, { MONGODB_URI: 'https://localhost' }, { POSTGRES_URL: '' }, { REDIS_URL: 'invalid' }]) {
     assert.throws(() => loadConfig({ ...environment, ...overrides }));
   }
   assert.equal(loadConfig({ ...environment, NODE_ENV: 'production', DEMO_MODE: 'false' }).demo, false);
 });
 @Controller('private-probe')
-class PrivateProbe { @Get() get() { return { secret: true }; } }
-async function makeApp(database: unknown): Promise<INestApplication> {
-  const module = await Test.createTestingModule({ controllers: [PrivateProbe, PropertiesController], providers: [PropertiesService, { provide: Database, useValue: database }, { provide: APP_GUARD, useClass: DefaultDenyGuard }] }).compile();
+class PrivateProbe { @Get() get(@Req() request: { user?: { uid: string } }) { return { secret: true, uid: request.user?.uid }; } }
+async function makeApp(database: unknown, verify: (token: string) => Promise<unknown> = async () => undefined): Promise<INestApplication> {
+  const module = await Test.createTestingModule({ controllers: [PrivateProbe, PropertiesController], providers: [PropertiesService, { provide: Database, useValue: database }, { provide: FirebaseAuthVerifier, useValue: { verify } }, { provide: APP_GUARD, useClass: DefaultDenyGuard }] }).compile();
   const app = module.createNestApplication();
   configure(app);
   await app.init();
   return app;
 }
 
-test('HTTP validation, default-deny authorization, contract and database failure', async () => {
+test('HTTP validation, public demo, denied invalid identities, contract and database failure', async () => {
   const queries: unknown[] = [];
   const database = { properties: {
     find: (filter: unknown) => { queries.push(filter); return { sort() { return this; }, skip() { return this; }, limit() { return this; }, async toArray() { return demoProperties; } }; },
@@ -42,6 +44,9 @@ test('HTTP validation, default-deny authorization, contract and database failure
   try {
     await request(app.getHttpServer()).get('/api/v1/private-probe').expect(401);
     await request(app.getHttpServer()).get('/api/v1/private-probe').set('Authorization', 'Bearer fabricated').expect(401);
+    for (const header of ['Bearer', 'Basic fabricated', 'Bearer two parts']) {
+      await request(app.getHttpServer()).get('/api/v1/private-probe').set('Authorization', header).expect(401);
+    }
     for (const query of ['limit=51', 'page=0', 'page=1.5', 'page=10001', 'q[x]=bad', 'unexpected=true']) {
       await request(app.getHttpServer()).get('/api/v1/properties?' + query).expect(400);
     }
@@ -55,6 +60,17 @@ test('HTTP validation, default-deny authorization, contract and database failure
     assert.ok(pattern.test('literal .* text'));
     assert.ok(!pattern.test('Magnolia House'));
 
+  } finally { await app.close(); }
+});
+
+test('verified Firebase identity is attached to protected requests; unverified identity is denied', async () => {
+  const app = await makeApp({ properties: {} }, async token => token === 'verified'
+    ? { uid: 'firebase-user-1', email: 'person@example.com', email_verified: true }
+    : token === 'unverified' ? { uid: 'firebase-user-1', email: 'person@example.com', email_verified: false } : undefined);
+  try {
+    const result = await request(app.getHttpServer()).get('/api/v1/private-probe').set('Authorization', 'Bearer verified').expect(200);
+    assert.deepEqual(result.body, { secret: true, uid: 'firebase-user-1' });
+    await request(app.getHttpServer()).get('/api/v1/private-probe').set('Authorization', 'Bearer unverified').expect(401);
   } finally { await app.close(); }
 });
 

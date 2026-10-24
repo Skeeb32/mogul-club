@@ -18,6 +18,11 @@
 		D481A80E22EA6F74606C7985 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDD819C24C91FDA5FA0243B /* NavigationTests.swift */; };
 		D891675F23BF666F6A7E3029 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636CED983D8300844C0AAB9C /* DiscoverView.swift */; };
 		EC8DF353177831F12EADC243 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD377FF1666DFBB4D0E494 /* APIClient.swift */; };
+F3F3F3F3F3F3F3F3F3F3F3F3 = {isa = PBXBuildFile; productRef = F2F2F2F2F2F2F2F2F2F2F2F2; };
+A3A3A3A3A3A3A3A3A3A3A3A3 = {isa = PBXBuildFile; productRef = A2A2A2A2A2A2A2A2A2A2A2A2; };
+		B1B1B1B1B1B1B1B1B1B1B1B1 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B2B2B2B2B2B2B2B2B2B2B2 /* AuthManager.swift */; };
+		C1C1C1C1C1C1C1C1C1C1C1C1 /* AuthViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2C2C2C2C2C2C2C2C2C2C2 /* AuthViews.swift */; };
+		D1D1D1D1D1D1D1D1D1D1D1D1 /* AuthenticationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D2D2D2D2D2D2D2D2D2D2D2 /* AuthenticationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +65,9 @@
 		A1229DC213B6EEB4CC370945 /* PropertyDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PropertyDetailView.swift; path = Features/Discover/PropertyDetailView.swift; sourceTree = "<group>"; };
 		CBA8C95DE1383AA98B84F63C /* NavigationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NavigationTests.swift; path = "Mogul ClubUITests/NavigationTests.swift"; sourceTree = "<group>"; };
 		DE9DA93CD23FD319373A2E31 /* APIClientTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = APIClientTests.swift; path = apps/ios/MogulClubTests/APIClientTests.swift; sourceTree = "<group>"; };
+		B2B2B2B2B2B2B2B2B2B2B2B2 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthManager.swift; path = apps/ios/MogulClub/Authentication/AuthManager.swift; sourceTree = SOURCE_ROOT; };
+		C2C2C2C2C2C2C2C2C2C2C2C2 /* AuthViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthViews.swift; path = apps/ios/MogulClub/Authentication/AuthViews.swift; sourceTree = SOURCE_ROOT; };
+		D2D2D2D2D2D2D2D2D2D2D2D2 /* AuthenticationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthenticationTests.swift; path = apps/ios/MogulClubTests/AuthenticationTests.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +75,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+A3A3A3A3A3A3A3A3A3A3A3A3,
+F3F3F3F3F3F3F3F3F3F3F3F3,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				77D64F9F40689A14398C62EE /* MogulClubApp.swift */,
+				C2C2C2C2C2C2C2C2C2C2C2C2 /* AuthViews.swift */,
+				B2B2B2B2B2B2B2B2B2B2B2B2 /* AuthManager.swift */,
 				0EFD377FF1666DFBB4D0E494 /* APIClient.swift */,
 				531B364F3E001A6036AA08C9 /* DesignSystem.swift */,
 				6D85F355F2B2E769931D37E5 /* Property.swift */,
@@ -150,6 +162,7 @@
 		89D0ADF6308CFF6900F400D3 /* Mogul ClubTests */ = {
 			isa = PBXGroup;
 			children = (
+				D2D2D2D2D2D2D2D2D2D2D2D2 /* AuthenticationTests.swift */,
 				89D0ADF7308CFF6900F400D3 /* Mogul_ClubTests.swift */,
 			);
 			path = "Mogul ClubTests";
@@ -171,6 +184,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 89D0AE07308CFF6900F400D3 /* Build configuration list for PBXNativeTarget "Mogul Club" */;
 			buildPhases = (
+				E1E1E1E1E1E1E1E1E1E1E1E1 /* Copy local Firebase configuration when present */,
 				89D0ADDE308CFF6700F400D3 /* Sources */,
 				89D0ADDF308CFF6700F400D3 /* Frameworks */,
 				89D0ADE0308CFF6700F400D3 /* Resources */,
@@ -179,7 +193,8 @@
 			);
 			dependencies = (
 			);
-			name = "Mogul Club";
+			packageProductDependencies = (A2A2A2A2A2A2A2A2A2A2A2A2,F2F2F2F2F2F2F2F2F2F2F2F2,);
+name = "Mogul Club";
 			productName = "Mogul Club";
 			productReference = 89D0ADE2308CFF6700F400D3 /* Mogul Club.app */;
 			productType = "com.apple.product-type.application";
@@ -253,7 +268,8 @@
 			);
 			mainGroup = 89D0ADD9308CFF6700F400D3;
 			productRefGroup = 89D0ADE3308CFF6700F400D3 /* Products */;
-			projectDirPath = "";
+			packageReferences = (A1A1A1A1A1A1A1A1A1A1A1A1,F1F1F1F1F1F1F1F1F1F1F1F1,);
+projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				89D0ADE1308CFF6700F400D3 /* Mogul Club */,
@@ -301,6 +317,8 @@
 				4EDC7CE7D676DD52ED980A8E /* DiscoverModel.swift in Sources */,
 				D891675F23BF666F6A7E3029 /* DiscoverView.swift in Sources */,
 				32F3C3CA4E483106D45B95B1 /* PropertyDetailView.swift in Sources */,
+				B1B1B1B1B1B1B1B1B1B1B1B1 /* AuthManager.swift in Sources */,
+				C1C1C1C1C1C1C1C1C1C1C1C1 /* AuthViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B15A94E4D3C561657D30920 /* APIClientTests.swift in Sources */,
+				D1D1D1D1D1D1D1D1D1D1D1D1 /* AuthenticationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +340,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E1E1E1E1E1E1E1E1E1E1E1 /* Copy local Firebase configuration when present */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
+			inputPaths = ("$(SRCROOT)/Mogul Club/GoogleService-Info.plist",);
+			name = "Copy local Firebase configuration when present";
+			outputPaths = ("$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -f \"$SRCROOT/Mogul Club/GoogleService-Info.plist\" ]; then cp \"$SRCROOT/Mogul Club/GoogleService-Info.plist\" \"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/GoogleService-Info.plist\"; fi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		89D0ADF5308CFF6900F400D3 /* PBXTargetDependency */ = {
@@ -335,6 +368,10 @@
 		};
 /* End PBXTargetDependency section */
 
+F1F1F1F1F1F1F1F1F1F1F1F1 = {isa = XCRemoteSwiftPackageReference; repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git"; requirement = {kind = upToNextMajorVersion; minimumVersion = 10.29.0; }; };
+F2F2F2F2F2F2F2F2F2F2F2F2 = {isa = XCSwiftPackageProductDependency; package = F1F1F1F1F1F1F1F1F1F1F1F1; productName = FirebaseAuth; };
+A1A1A1A1A1A1A1A1A1A1A1A1 = {isa = XCRemoteSwiftPackageReference; repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git"; requirement = {kind = upToNextMajorVersion; minimumVersion = 7.1.0; }; };
+A2A2A2A2A2A2A2A2A2A2A2A2 = {isa = XCSwiftPackageProductDependency; package = A1A1A1A1A1A1A1A1A1A1A1A1; productName = GoogleSignIn; };
 /* Begin XCBuildConfiguration section */
 		89D0AE05308CFF6900F400D3 /* Debug */ = {
 			isa = XCBuildConfiguration;

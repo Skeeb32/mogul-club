@@ -5,6 +5,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Database } from './database';
 import { PropertiesController, PropertiesService } from './properties';
 import { DefaultDenyGuard, Public } from './security';
+import { FirebaseAuthVerifier } from './firebase-auth';
 @ApiTags('Health')
 @Public()
 @Controller()
@@ -21,6 +22,6 @@ class HealthController {
 @Module({
   imports: [ThrottlerModule.forRoot([{ ttl: 60000, limit: 120 }])],
   controllers: [HealthController, PropertiesController],
-  providers: [Database, PropertiesService, { provide: APP_GUARD, useClass: DefaultDenyGuard }, { provide: APP_GUARD, useClass: ThrottlerGuard }],
+  providers: [Database, PropertiesService, FirebaseAuthVerifier, { provide: APP_GUARD, useClass: DefaultDenyGuard }, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

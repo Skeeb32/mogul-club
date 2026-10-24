@@ -39,6 +39,7 @@ services:
     environment: &api-environment
       NODE_ENV: development
       DEMO_MODE: "true"
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-}
       PORT: "3001"
       MONGODB_URI: mongodb://mongodb:27017/mogul_demo
       POSTGRES_URL: postgresql://mogul:local-development-only@postgres:5432/mogul_ledger

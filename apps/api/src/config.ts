@@ -5,6 +5,7 @@ export interface Config {
   mongoUri: string;
   postgresUrl: string;
   redisUrl: string;
+  firebaseProjectId?: string;
 }
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   const environment = env.NODE_ENV ?? 'development';
@@ -24,5 +25,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     mongoUri: required('MONGODB_URI', ['mongodb:', 'mongodb+srv:']),
     postgresUrl: required('POSTGRES_URL', ['postgres:', 'postgresql:']),
     redisUrl: required('REDIS_URL', ['redis:', 'rediss:']),
+    firebaseProjectId: env.FIREBASE_PROJECT_ID?.trim() || undefined,
   };
 }
