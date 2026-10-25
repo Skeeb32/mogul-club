@@ -32,7 +32,7 @@ struct AuthEntryView: View {
                     if let setup = manager.setupMessage { Label(setup, systemImage: "wrench.and.screwdriver").font(.footnote).frame(maxWidth: .infinity, alignment: .leading).padding().background(.quaternary, in: RoundedRectangle(cornerRadius: 14)) }
                     if screen == .menu {
                         appleButton
-                        providerButton("Continue with Google", icon: "g.circle") { Task { await manager.googleSignIn() } }
+                        providerButton("Continue with Gmail", icon: "envelope.fill") { Task { await manager.googleSignIn() } }
                             .disabled(manager.setupMessage != nil || manager.isWorking)
                         Divider().overlay(Text("or").font(.caption).padding(.horizontal, 10).background(.background)).padding(.vertical, 4)
                         Button { screen = .signIn } label: { Text("Continue with Email") }.buttonStyle(PrimaryAuthButton())
