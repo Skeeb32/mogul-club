@@ -404,7 +404,29 @@ private struct CommunitySeed {
             }
         }
         let follows = (0..<80).compactMap { i -> ClubFollow? in let follower = users[i % users.count].id; let followed = users[(i * 7 + 5) % users.count].id; return follower == followed ? nil : ClubFollow(followerID: follower, followedID: followed) }
-        let notices = (0..<18).map { index in ClubNotice(id: "notice_\(index + 1)", recipientID: "user_001", actorID: users[(index + 7) % users.count].id, clubID: clubs[index % clubs.count].id, postID: posts[index].id, message: ["commented on a discussion you follow", "shared a new post in your club", "invited you to compare notes", "posted an upcoming community event"][index % 4], createdAt: Calendar.current.date(byAdding: .hour, value: -index * 4, to: .now) ?? .now, isRead: index > 5) }
+        let noticeMessages = [
+            "commented on a discussion you follow",
+            "shared a new post in your club",
+            "invited you to compare notes",
+            "posted an upcoming community event"
+        ]
+        let notices: [ClubNotice] = (0..<18).map { index in
+            let actorID = users[(index + 7) % users.count].id
+            let clubID = clubs[index % clubs.count].id
+            let postID = posts[index].id
+            let message = noticeMessages[index % noticeMessages.count]
+            let createdAt = Calendar.current.date(byAdding: .hour, value: -index * 4, to: .now) ?? .now
+            return ClubNotice(
+                id: "notice_\(index + 1)",
+                recipientID: "user_001",
+                actorID: actorID,
+                clubID: clubID,
+                postID: postID,
+                message: message,
+                createdAt: createdAt,
+                isRead: index > 5
+            )
+        }
         let events = clubs.enumerated().flatMap { index, club in
             (0..<2).map { n in
                 ClubEvent(id: "event_\(index + 1)_\(n + 1)", clubID: club.id, title: ["Neighborhood walk & coffee", "Monthly deal-room discussion"][n], description: ["Meet local members, compare notes, and share what you are seeing around the neighborhood.", "An open, educational conversation about underwriting assumptions and lessons learned."][n], imageURL: club.coverURL, date: Calendar.current.date(byAdding: .day, value: n == 0 ? (index % 8) + 2 : -((index % 8) + 2), to: .now) ?? .now, location: n == 0 ? "Online community room" : "Community meetup · details in club", hostID: club.creatorID, attendeeIDs: Array(memberships.filter { $0.clubID == club.id }.prefix(3).map(\.userID)), isOnline: n == 0)
