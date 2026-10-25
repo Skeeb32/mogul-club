@@ -15,7 +15,9 @@ struct PropertyDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 18) {
                         DemoNotice().padding(.horizontal, 18)
-                        PropertyGalleryPlaceholder()
+                        DemoPropertyPhotography(property: property, height: 250)
+                            .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                            .padding(.horizontal, 18)
                         VStack(alignment: .leading, spacing: 5) {
                             Text(property.name).font(.title.weight(.bold))
                             Text("\(property.city), \(property.state)").font(.subheadline).foregroundStyle(.secondary)
@@ -67,22 +69,43 @@ struct PropertyDetailView: View {
     }
 }
 
-private struct PropertyGalleryPlaceholder: View {
+struct DemoPropertyPhotography: View {
+    let property: Property
+    var height: CGFloat
+
+    private var imageURL: URL? {
+        // Unsplash images are licensed for free use; these are presentation photography,
+        // not photographs of the fictional demo records shown in the app.
+        let photoID = property.id == "demo-cedar" ? "photo-1600607687939-ce8a6c25118c" : "photo-1600585154340-be6161a56a0c"
+        return URL(string: "https://images.unsplash.com/\(photoID)?auto=format&fit=crop&w=1400&q=85")
+    }
+
     var body: some View {
-        VStack(spacing: 4) {
-            ZStack(alignment: .bottomLeading) {
-                LinearGradient(colors: [Color(red: 0.79, green: 0.86, blue: 0.81), Color(red: 0.91, green: 0.91, blue: 0.85), Color(red: 0.70, green: 0.78, blue: 0.72)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                Image(systemName: "house.fill").resizable().scaledToFit().frame(width: 115, height: 88).foregroundStyle(.white.opacity(0.9)).frame(maxWidth: .infinity, maxHeight: .infinity)
-                Text("ILLUSTRATIVE IMAGE PLACEHOLDER").font(.system(size: 9, weight: .bold)).tracking(1).padding(9).background(.regularMaterial, in: Capsule()).padding(12)
-            }.frame(height: 220)
-            HStack(spacing: 4) {
-                ForEach(0..<3) { _ in
-                    RoundedRectangle(cornerRadius: 5).fill(Color(red: 0.87, green: 0.90, blue: 0.87))
-                        .overlay { Image(systemName: "photo").foregroundStyle(.white).font(.title3) }
-                        .frame(height: 62)
+        ZStack(alignment: .bottomLeading) {
+            AsyncImage(url: imageURL) { phase in
+                switch phase {
+                case .success(let image): image.resizable().scaledToFill()
+                case .empty, .failure:
+                    ZStack {
+                        LinearGradient(colors: [Color(red: 0.84, green: 0.88, blue: 0.84), Color(red: 0.70, green: 0.78, blue: 0.73)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        Image(systemName: "house.lodge.fill").font(.system(size: 54, weight: .light)).foregroundStyle(.white.opacity(0.8))
+                    }
+                @unknown default: Color(.tertiarySystemGroupedBackground)
                 }
             }
-        }.padding(.horizontal, 18)
+            .frame(maxWidth: .infinity).frame(height: height).clipped()
+            LinearGradient(colors: [.clear, .black.opacity(0.52)], startPoint: .center, endPoint: .bottom)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("SYNTHETIC DEMO PROPERTY")
+                    .font(.system(size: 9, weight: .bold, design: .rounded)).tracking(1)
+                    .foregroundStyle(.white).padding(.horizontal, 10).padding(.vertical, 7)
+                    .background(.black.opacity(0.52), in: Capsule())
+                Label("Illustrative photo · not this property", systemImage: "photo")
+                    .font(.caption.weight(.medium)).foregroundStyle(.white)
+            }
+            .padding(15)
+        }
+        .frame(height: height).accessibilityLabel("Illustrative property photography. Synthetic demo property.")
     }
 }
 

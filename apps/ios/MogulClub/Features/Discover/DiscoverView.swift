@@ -5,6 +5,20 @@ struct DiscoverView: View {
     @StateObject private var model: DiscoverModel
     private let api: any PropertyServing
     private let onAccount: () -> Void
+    @State private var selectedType = "All homes"
+
+    private let propertyTypes = ["All homes", "Single family", "Townhome"]
+
+    private var visibleProperties: [Property] {
+        guard case .loaded(let properties) = model.state else { return [] }
+        let query = model.query.trimmingCharacters(in: .whitespacesAndNewlines)
+        return properties.filter { property in
+            let matchesQuery = query.isEmpty || [property.name, property.city, property.state, property.propertyType, property.summary]
+                .joined(separator: " ").localizedCaseInsensitiveContains(query)
+            let matchesType = selectedType == "All homes" || property.propertyType.localizedCaseInsensitiveContains(selectedType)
+            return matchesQuery && matchesType
+        }
+    }
 
     init(api: any PropertyServing, onAccount: @escaping () -> Void = {}) {
         self.api = api
@@ -16,29 +30,34 @@ struct DiscoverView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    DemoNotice()
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Explore properties").font(.largeTitle.weight(.bold))
-                        Text("Discover homes and learn what drives their value.").font(.subheadline).foregroundStyle(.secondary)
-                    }
+                    intro
+                    searchField
+                    typeFilters
                     switch model.state {
                     case .loading:
-                        ProgressView("Loading properties…").frame(maxWidth: .infinity, minHeight: 220)
+                        loadingState
                     case .failed:
-                        ContentUnavailableView {
-                            Label("Unable to load properties", systemImage: "wifi.exclamationmark")
-                        } description: { Text("Check that the development API is running, then try again.") }
-                        actions: { Button("Try again") { Task { await model.load() } }.buttonStyle(.borderedProminent).accessibilityIdentifier("retry-properties") }
+                        errorState
                     case .loaded(let properties):
                         if properties.isEmpty {
-                            ContentUnavailableView.search(text: model.query)
+                            emptyState(title: "No demo properties yet", message: "Check back when the local demo API has property data.")
+                        } else if visibleProperties.isEmpty {
+                            emptyState(title: "No homes match", message: "Try another name, location, or property type.")
                         } else {
-                            LazyVStack(spacing: 16) {
-                                ForEach(properties) { property in
+                            VStack(alignment: .leading, spacing: 14) {
+                                HStack(alignment: .firstTextBaseline) {
+                                    Text("Homes to discover").font(.title2.weight(.bold))
+                                    Spacer()
+                                    Text("\(visibleProperties.count) demo \(visibleProperties.count == 1 ? "home" : "homes")")
+                                        .font(.caption.weight(.medium)).foregroundStyle(.secondary)
+                                }
+                                LazyVStack(spacing: 18) {
+                                ForEach(visibleProperties) { property in
                                     NavigationLink {
                                         PropertyDetailView(id: property.id, api: api)
                                     } label: { PropertyCard(property: property) }
                                         .buttonStyle(.plain)
+                                }
                                 }
                             }
                         }
@@ -52,15 +71,103 @@ struct DiscoverView: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) { MogulLogo(width: 124) }
+                ToolbarItem(placement: .principal) { MogulLogo(width: 132) }
                 ToolbarItem(placement: .topBarTrailing) { Button(action: onAccount) { Image(systemName: "person.crop.circle").font(.title3) }.accessibilityLabel("Account") }
             }
-            .searchable(text: $model.query, prompt: "Search properties or locations")
-            .onSubmit(of: .search) { Task { await model.load() } }
-            .onChange(of: model.query) { _, value in if value.isEmpty { Task { await model.load() } } }
             .refreshable { await model.load() }
-            .task { await model.load() }
+            .task(id: model.query) {
+                if !model.query.isEmpty {
+                    try? await Task.sleep(nanoseconds: 350_000_000)
+                    guard !Task.isCancelled else { return }
+                }
+                await model.load()
+            }
         }
+    }
+
+    private var intro: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            HStack(spacing: 7) {
+                Circle().fill(ClubStyle.emerald).frame(width: 7, height: 7)
+                Text("MOGUL CLUB · DISCOVER").font(.caption.weight(.bold)).tracking(1.15).foregroundStyle(ClubStyle.emerald)
+            }
+            Text("Homes worth\na closer look.")
+                .font(.system(size: 34, weight: .semibold, design: .rounded))
+                .tracking(-1.25).lineSpacing(-2).fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier("discover-heading")
+            Text("Fictional demo homes · no offerings.")
+                .font(.subheadline).foregroundStyle(.secondary)
+                .accessibilityIdentifier("demo-notice")
+        }
+        .padding(.top, 8)
+    }
+
+    private var searchField: some View {
+        HStack(spacing: 11) {
+            Image(systemName: "magnifyingglass").font(.body.weight(.medium)).foregroundStyle(ClubStyle.emerald)
+            TextField("Search homes or locations", text: $model.query)
+                .font(.subheadline).textInputAutocapitalization(.words).autocorrectionDisabled()
+                .submitLabel(.search).accessibilityIdentifier("discover-search")
+            if !model.query.isEmpty {
+                Button { model.query = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(.tertiary) }
+                    .accessibilityLabel("Clear search")
+            }
+        }
+        .padding(.horizontal, 15).frame(height: 52)
+        .background(.background, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 15, style: .continuous).stroke(.black.opacity(0.07)))
+    }
+
+    private var typeFilters: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 9) {
+                ForEach(propertyTypes, id: \.self) { type in
+                    Button { selectedType = type } label: {
+                        Text(type).font(.subheadline.weight(.medium))
+                            .padding(.horizontal, 15).padding(.vertical, 10)
+                            .foregroundStyle(selectedType == type ? .white : .primary)
+                            .background(selectedType == type ? ClubStyle.emerald : Color(.secondarySystemBackground), in: Capsule())
+                    }
+                    .buttonStyle(.plain).accessibilityAddTraits(selectedType == type ? .isSelected : [])
+                }
+            }
+        }
+        .contentMargins(.trailing, 1)
+    }
+
+    private var loadingState: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            RoundedRectangle(cornerRadius: 22).fill(Color(.tertiarySystemGroupedBackground)).frame(height: 255)
+                .overlay { ProgressView("Finding demo homes…") }
+            RoundedRectangle(cornerRadius: 12).fill(Color(.tertiarySystemGroupedBackground)).frame(height: 76)
+        }.accessibilityIdentifier("discover-loading")
+    }
+
+    private var errorState: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            Image(systemName: "wifi.exclamationmark").font(.title2).foregroundStyle(ClubStyle.emerald)
+            Text("We couldn’t reach the demo homes").font(.title3.weight(.semibold))
+            Text("Check that the local demo API is running and your device is connected, then try again.")
+                .font(.subheadline).foregroundStyle(.secondary)
+            Button { Task { await model.load() } } label: {
+                Label("Try again", systemImage: "arrow.clockwise").font(.subheadline.weight(.semibold))
+                    .padding(.horizontal, 15).padding(.vertical, 11).foregroundStyle(.white)
+                    .background(ClubStyle.emerald, in: Capsule())
+            }
+            .accessibilityIdentifier("retry-properties")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading).padding(20)
+        .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func emptyState(title: String, message: String) -> some View {
+        VStack(spacing: 10) {
+            Image(systemName: "house.lodge").font(.system(size: 30)).foregroundStyle(ClubStyle.emerald)
+            Text(title).font(.headline)
+            Text(message).font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity).padding(28)
+        .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }
 
@@ -68,48 +175,43 @@ private struct PropertyCard: View {
     let property: Property
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ZStack(alignment: .bottomLeading) {
-                LinearGradient(colors: [Color(red: 0.79, green: 0.86, blue: 0.81), Color(red: 0.91, green: 0.91, blue: 0.85), Color(red: 0.70, green: 0.78, blue: 0.72)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                Image(systemName: "house.fill")
-                    .resizable().scaledToFit().frame(width: 104, height: 78)
-                    .foregroundStyle(.white.opacity(0.92))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    Text("ILLUSTRATIVE PROPERTY")
-                        .font(.system(size: 9, weight: .bold, design: .rounded)).tracking(1)
-                        .padding(.horizontal, 9).padding(.vertical, 6)
-                        .background(.regularMaterial, in: Capsule()).padding(12)
-            }
-            .frame(height: 184).clipped()
-            VStack(alignment: .leading, spacing: 10) {
+            DemoPropertyPhotography(property: property, height: 218)
+            VStack(alignment: .leading, spacing: 12) {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(property.name).font(.title3.weight(.bold)).foregroundStyle(.primary)
-                        Text("\(property.city), \(property.state)").font(.subheadline).foregroundStyle(.secondary)
+                        Text(property.name).font(.title2.weight(.bold)).tracking(-0.35).foregroundStyle(.primary)
+                            .accessibilityIdentifier(property.name)
+                        Label("\(property.city), \(property.state)", systemImage: "mappin.and.ellipse")
+                            .font(.subheadline).foregroundStyle(.secondary)
                     }
                     Spacer(minLength: 8)
                     Image(systemName: "arrow.up.right").font(.footnote.weight(.semibold)).foregroundStyle(ClubStyle.emerald)
+                        .padding(10).background(Color(.secondarySystemBackground), in: Circle())
                 }
-                HStack(spacing: 12) {
-                    Label("\(property.bedrooms) bd", systemImage: "bed.double")
-                    Label("\(property.bathrooms) ba", systemImage: "shower")
-                    Label("\(property.areaSqFt.formatted()) sq ft", systemImage: "square.dashed")
-                }
-                .font(.caption).foregroundStyle(.secondary)
-                Divider()
-                HStack(alignment: .firstTextBaseline) {
-                    Text(property.illustrativeValue).font(.title3.weight(.bold))
-                    Text("illustrative value").font(.caption).foregroundStyle(.secondary)
-                    Spacer()
-                    Text(property.propertyType).font(.caption.weight(.semibold)).foregroundStyle(ClubStyle.emerald)
+                HStack(spacing: 8) {
+                    PropertyTag(title: property.propertyType, icon: "house")
+                    PropertyTag(title: "\(property.bedrooms) bd", icon: "bed.double")
+                    PropertyTag(title: "\(property.bathrooms) ba", icon: "shower")
+                    Spacer(minLength: 0)
                 }
             }
-            .padding(15)
+            .padding(.horizontal, 17).padding(.vertical, 16)
         }
-        .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(.black.opacity(0.05)))
-        .shadow(color: .black.opacity(0.04), radius: 10, y: 4)
+        .background(.background, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(.black.opacity(0.055)))
+        .shadow(color: .black.opacity(0.055), radius: 16, y: 6)
         .accessibilityElement(children: .combine)
+    }
+}
+
+private struct PropertyTag: View {
+    let title: String
+    let icon: String
+    var body: some View {
+        Label(title, systemImage: icon).font(.caption.weight(.medium)).foregroundStyle(.secondary)
+            .padding(.horizontal, 10).padding(.vertical, 7)
+            .background(Color(.secondarySystemBackground), in: Capsule())
     }
 }
 

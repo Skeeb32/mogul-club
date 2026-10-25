@@ -42,4 +42,20 @@ final class NavigationTests: XCTestCase {
         app.navigationBars.buttons.firstMatch.tap()
         XCTAssertTrue(property.waitForExistence(timeout: 5))
     }
+
+    func testDiscoverSearchFiltersAPIBackedHomes() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-skip-welcome"]
+        app.launch()
+
+        XCTAssertTrue(app.staticTexts["Magnolia House"].waitForExistence(timeout: 20), "Seeded property should load from the local API")
+        let search = app.textFields["discover-search"]
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap()
+        search.typeText("Magnolia")
+
+        XCTAssertTrue(app.staticTexts["1 demo home"].waitForExistence(timeout: 10), "Search should filter the API-backed property list")
+        XCTAssertTrue(app.staticTexts["Magnolia House"].exists)
+        XCTAssertFalse(app.staticTexts["Cedar Row"].exists)
+    }
 }
