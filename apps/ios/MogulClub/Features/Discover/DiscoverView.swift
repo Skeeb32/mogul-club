@@ -113,36 +113,6 @@ private struct PropertyCard: View {
     }
 }
 
-struct ClubsView: View {
-    let onAccount: () -> Void
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    DemoNotice()
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Invest together").font(.largeTitle.weight(.bold))
-                        Text("Clubs bring people together around shared real estate strategies.").foregroundStyle(.secondary)
-                    }
-                    VStack(alignment: .leading, spacing: 14) {
-                        Image(systemName: "person.3.fill").font(.largeTitle).foregroundStyle(ClubStyle.emerald)
-                        Text("Clubs are coming soon").font(.title2.weight(.bold))
-                        Text("No groups, memberships, or investment opportunities are active in this demonstration.").foregroundStyle(.secondary)
-                    }
-                    .padding(22).frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.background, in: RoundedRectangle(cornerRadius: 18))
-                }.padding(18)
-            }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("")
-            .toolbar {
-                ToolbarItem(placement: .principal) { MogulLogo(width: 124) }
-                ToolbarItem(placement: .topBarTrailing) { Button(action: onAccount) { Image(systemName: "person.crop.circle").font(.title3) }.accessibilityLabel("Account") }
-            }
-        }
-    }
-}
-
 struct PortfolioView: View {
     let onAccount: () -> Void
     var body: some View {

@@ -18,6 +18,7 @@ struct MogulClubApp: App {
 struct RootView: View {
     @AppStorage("hasSeenDemoWelcome") private var welcomed = false
     @StateObject private var auth = AuthManager()
+    @StateObject private var clubsStore = ClubsStore()
     @State private var showingAuth = false
     @State private var showingAccount = false
     var body: some View {
@@ -25,7 +26,7 @@ struct RootView: View {
             TabView {
                 DiscoverView(api: APIClient.development) { showingAccount = true }
                     .tabItem { Label("Properties", systemImage: "house") }
-                ClubsView(onAccount: { showingAccount = true })
+                ClubsView(store: clubsStore, onAccount: { showingAccount = true })
                     .tabItem { Label("Clubs", systemImage: "person.3") }
                 PortfolioView(onAccount: { showingAccount = true })
                     .tabItem { Label("Portfolio", systemImage: "chart.pie") }

@@ -9,7 +9,7 @@ final class NavigationTests: XCTestCase {
         XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 5), app.debugDescription)
         XCTAssertTrue(app.tabBars.buttons["Properties"].exists)
         app.tabBars.buttons["Clubs"].tap()
-        XCTAssertTrue(app.staticTexts["Clubs are coming soon"].exists)
+        XCTAssertTrue(app.staticTexts["Clubs"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Portfolio"].tap()
         XCTAssertTrue(app.staticTexts["Illustrative portfolio value"].exists)
         app.tabBars.buttons["Analysis"].tap()
