@@ -7,12 +7,15 @@ final class NavigationTests: XCTestCase {
         app.buttons["explore-demo"].tap()
         XCTAssertTrue(app.staticTexts["demo-notice"].firstMatch.waitForExistence(timeout: 5))
         XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssertTrue(app.tabBars.buttons["Properties"].exists)
+        app.tabBars.buttons["Clubs"].tap()
+        XCTAssertTrue(app.staticTexts["Clubs are coming soon"].exists)
         app.tabBars.buttons["Portfolio"].tap()
-        XCTAssertTrue(app.staticTexts["No portfolio yet"].exists)
-        app.tabBars.buttons["Documents"].tap()
-        XCTAssertTrue(app.staticTexts["No documents yet"].exists)
-        app.tabBars.buttons["Account"].tap()
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ==[c] %@", "Your account")).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Illustrative portfolio value"].exists)
+        app.tabBars.buttons["Analysis"].tap()
+        XCTAssertTrue(app.staticTexts["Historical returns"].exists)
+        app.buttons["Account"].tap()
+        XCTAssertTrue(app.navigationBars["Account"].waitForExistence(timeout: 5))
     }
     func testAuthenticationEntryShowsRealProviderOptionsWithoutPretendingToSignIn() {
         let app = XCUIApplication()
@@ -35,8 +38,8 @@ final class NavigationTests: XCTestCase {
         XCTAssertTrue(property.waitForExistence(timeout: 20), "Seeded property should load from the local API")
         property.tap()
         XCTAssertTrue(app.navigationBars["Property details"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ==[c] %@", "Illustrative property facts")).firstMatch.waitForExistence(timeout: 5))
-        app.navigationBars.buttons["Discover"].tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ==[c] %@", "Property overview")).firstMatch.waitForExistence(timeout: 5))
+        app.navigationBars.buttons.firstMatch.tap()
         XCTAssertTrue(property.waitForExistence(timeout: 5))
     }
 }

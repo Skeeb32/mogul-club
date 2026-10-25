@@ -19,32 +19,20 @@ struct RootView: View {
     @AppStorage("hasSeenDemoWelcome") private var welcomed = false
     @StateObject private var auth = AuthManager()
     @State private var showingAuth = false
+    @State private var showingAccount = false
     var body: some View {
         if welcomed {
             TabView {
-                DiscoverView(api: APIClient.development).tabItem { Label("Discover", systemImage: "house") }
-                NavigationStack { UnavailableView(title: "No portfolio yet", message: "This demo does not create investments, ownership or balances.").navigationTitle("Portfolio") }.tabItem { Label("Portfolio", systemImage: "chart.bar") }
-                NavigationStack { UnavailableView(title: "No documents yet", message: "Statements and tax documents will appear only after an authorized account and document workflow are available.").navigationTitle("Documents") }.tabItem { Label("Documents", systemImage: "doc.text") }
-                NavigationStack {
-                    List {
-                        HStack(spacing: 16) {
-                            Image("MogulProfile").resizable().scaledToFit()
-                                .frame(width: 80, height: 80).clipShape(RoundedRectangle(cornerRadius: 16))
-                                .accessibilityHidden(true)
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(auth.currentUser?.displayName ?? "Mogul Club").font(.title2.weight(.semibold))
-                                Text(auth.currentUser == nil ? "Demo guest" : "Verified account").font(.subheadline).foregroundStyle(.secondary)
-                            }
-                        }.padding(.vertical, 8)
-                        DemoNotice()
-                        AuthAccountSection(manager: auth) { welcomed = false }
-                        Section("Your account") { Text(auth.currentUser.map { "Signed in as \($0.email). The property library remains synthetic demonstration content." } ?? "You are browsing as a guest. Sign-in does not unlock investment features in this demo.") }
-                        Section("Privacy") { Text("When Firebase is configured, it handles account credentials and identity. This demo does not collect payment information. Searches are sent to the development API. No analytics SDK is installed.") }
-                        Section("Legal and support") { Text("This is a software demonstration, not an offer to invest. Approved terms, privacy policy and support contact must be supplied before release.") }
-                        Section("Development") { Button("Show welcome again") { welcomed = false } }
-                    }.navigationTitle("Account")
-                }.tabItem { Label("Account", systemImage: "person.crop.circle") }
+                DiscoverView(api: APIClient.development) { showingAccount = true }
+                    .tabItem { Label("Properties", systemImage: "house") }
+                ClubsView(onAccount: { showingAccount = true })
+                    .tabItem { Label("Clubs", systemImage: "person.3") }
+                PortfolioView(onAccount: { showingAccount = true })
+                    .tabItem { Label("Portfolio", systemImage: "chart.pie") }
+                AnalysisView(onAccount: { showingAccount = true })
+                    .tabItem { Label("Analysis", systemImage: "chart.xyaxis.line") }
             }.sheet(isPresented: $showingAuth) { AuthEntryView(manager: auth) }
+            .sheet(isPresented: $showingAccount) { AccountView(auth: auth) { welcomed = false } }
             .onOpenURL { url in _ = GIDSignIn.sharedInstance.handle(url) }
             .onChange(of: auth.currentUser) { _, profile in if profile != nil { welcomed = true } }
             .onChange(of: auth.state) { _, state in if case .needsVerification = state { showingAuth = true } }
@@ -71,6 +59,35 @@ struct RootView: View {
             .onChange(of: auth.currentUser) { _, profile in if profile != nil { welcomed = true } }
             .onChange(of: auth.state) { _, state in if case .needsVerification = state { showingAuth = true } }
             .tint(ClubStyle.emerald)
+        }
+    }
+}
+
+private struct AccountView: View {
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject var auth: AuthManager
+    let showWelcome: () -> Void
+    var body: some View {
+        NavigationStack {
+            List {
+                HStack(spacing: 16) {
+                    Image("MogulProfile").resizable().scaledToFit()
+                        .frame(width: 80, height: 80).clipShape(RoundedRectangle(cornerRadius: 16))
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(auth.currentUser?.displayName ?? "Mogul Club").font(.title2.weight(.semibold))
+                        Text(auth.currentUser == nil ? "Demo guest" : "Verified account").font(.subheadline).foregroundStyle(.secondary)
+                    }
+                }.padding(.vertical, 8)
+                DemoNotice()
+                AuthAccountSection(manager: auth, onSignedOut: showWelcome)
+                Section("Your account") { Text(auth.currentUser.map { "Signed in as \($0.email). The property library remains synthetic demonstration content." } ?? "You are browsing as a guest. Sign-in does not unlock investment features in this demo.") }
+                Section("Privacy") { Text("When Firebase is configured, it handles account credentials and identity. This demo does not collect payment information. Searches are sent to the development API. No analytics SDK is installed.") }
+                Section("Legal and support") { Text("This is a software demonstration, not an offer to invest. Approved terms, privacy policy and support contact must be supplied before release.") }
+                Section("Development") { Button("Show welcome again", action: showWelcome) }
+            }
+            .navigationTitle("Account")
+            .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
         }
     }
 }
